@@ -3,9 +3,11 @@ import '../css/app.scss'
 
 import React, { Component } from 'react'
 import store from 'store'
+import Guid from 'guid'
 // import { ContentState, convertToRaw, convertFromRaw } from 'draft-js'
 import { render } from 'react-dom'
 import App from './app'
+import Login from './login'
 
 window.React = React
 
@@ -14,31 +16,28 @@ class Root extends Component {
     super()
     this.state = {
       username: store.get('username') || null,
+      id: store.get('id') || null,
     }
   }
 
-  componentDidMount() {
-    this.name.focus()
-  }
-
-  saveName(e) {
-    e.preventDefault()
-    let name = this.name.value
-    store.set('username', name)
-    this.setState({ username: name })
+  saveName(username) {
+    let id = Guid.create().value
+    store.set('username', username)
+    store.set('id', id)
+    this.setState({ username, id, room_id })
   }
 
   forget() {
     store.clear()
-    this.setState({ username: null })
+    this.setState({ username: null, id: null })
   }
 
   render() {
-    let { username } = this.state
+    let { username, id } = this.state
     if (username) {
       return (
         <div>
-          <App username={ username } />
+          <App username={ username } id={ id } room_id={ room_id } />
           <div className="top">
             <div className="forget" onClick={ this.forget.bind(this) }>
               Forget me
@@ -48,12 +47,7 @@ class Root extends Component {
       )
     } else {
       return (
-        <div>
-          <h1>What's your name?</h1>
-          <form onSubmit={ this.saveName.bind(this) } >
-            <input type="text" ref={ (e) => this.name = e } />
-          </form>
-        </div>
+        <Login saveName={ this.saveName.bind(this) }/>
       )
 
     }

@@ -17,6 +17,7 @@ defmodule Ghost.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get ":room_id", PageController, :index
   end
 
   # Other scopes may use custom stacks.
