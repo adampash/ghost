@@ -1,4 +1,5 @@
 import { Component } from 'react'
+import Message from './message'
 
 export default class MessageList extends Component {
   constructor(props) {
@@ -10,7 +11,9 @@ export default class MessageList extends Component {
     let { messages } = this.props
     return (
       <div>
-        Messages go here
+      { messages.map( (message) => {
+        return <Message key={ message.id } message={ message } />
+      })}
       </div>
     )
   }

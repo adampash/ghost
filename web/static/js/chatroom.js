@@ -1,4 +1,6 @@
 import { Component } from 'react'
+import { connect } from 'react-redux'
+import { sendMessage } from './actions/messages'
 
 import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import { Socket } from 'phoenix'
@@ -7,7 +9,7 @@ import Input from './chatroom/input'
 import MessageList from './chatroom/message_list'
 import EmptyRoomMessage from './chatroom/empty_room_message'
 
-export default class Chatroom extends Component {
+class Chatroom extends Component {
   constructor(props) {
     super()
     let { room_id } = props
@@ -43,15 +45,29 @@ export default class Chatroom extends Component {
     console.log(payload)
   }
 
+  handleSendMessage(message) {
+    let { dispatch } = this.props
+    dispatch(sendMessage(message))
+  }
+
   render() {
-    let { username, id, room_id } = this.props
+    let { username, id, room_id, messages } = this.props
     console.log(username, id, room_id)
     return (
       <div className="chatroom">
         <EmptyRoomMessage />
-        <MessageList />
-        <Input />
+        <MessageList messages={ messages } />
+        <Input onSend={ this.handleSendMessage.bind(this) }/>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state, ownProps) => {
+  let { messages } = state
+  return {
+    messages
+  }
+}
+
+export default connect(mapStateToProps)(Chatroom)

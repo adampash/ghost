@@ -2,14 +2,21 @@
 import '../css/app.scss'
 
 import React, { Component } from 'react'
+import { render } from 'react-dom'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import rootReducer from './reducers/index'
+
 import store from 'store'
 import Guid from 'guid'
-// import { ContentState, convertToRaw, convertFromRaw } from 'draft-js'
-import { render } from 'react-dom'
+
 import App from './app'
 import Login from './login'
 
 window.React = React
+
+let reduxStore = createStore(rootReducer)
+
 
 class Root extends Component {
   constructor() {
@@ -54,4 +61,8 @@ class Root extends Component {
   }
 }
 
-render(<Root />, document.getElementById('root'))
+render(
+  <Provider store={ reduxStore }>
+    <Root />
+  </Provider>,
+  document.getElementById('root'))
