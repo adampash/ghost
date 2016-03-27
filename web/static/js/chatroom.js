@@ -3,6 +3,10 @@ import { Component } from 'react'
 import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import { Socket } from 'phoenix'
 
+import Input from './chatroom/input'
+import MessageList from './chatroom/message_list'
+import EmptyRoomMessage from './chatroom/empty_room_message'
+
 export default class Chatroom extends Component {
   constructor(props) {
     super()
@@ -44,7 +48,9 @@ export default class Chatroom extends Component {
     console.log(username, id, room_id)
     return (
       <div className="chatroom">
-        this is a chatroom
+        <EmptyRoomMessage />
+        <MessageList />
+        <Input />
       </div>
     )
   }
