@@ -20,6 +20,19 @@ export default class Chatroom extends Component {
     .receive("error", resp => { console.log("Unable to join", resp) })
 
     this.channel.on("post_update", this.handlePayload.bind(this))
+    this.channel.on("pong", this.handlePayload.bind(this))
+  }
+
+  componentDidMount() {
+    this.ping = setInterval(() => {
+      this.channel.push("ping", { message: "HI" })
+    }, 10000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.ping)
+    this.channel.leave()
+    this.socket.disconnect()
   }
 
   handlePayload(payload) {
