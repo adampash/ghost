@@ -10,7 +10,7 @@ export default class Message extends Component {
     let { message } = this.props
     return (
       <div>
-        { message.text }
+        { message.user.username }: { message.text }
       </div>
     )
   }

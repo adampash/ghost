@@ -4,8 +4,9 @@ import '../css/app.scss'
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, dispatch } from 'redux'
 import rootReducer from './reducers/index'
+import { forgetMe } from './actions/messages'
 
 import store from 'store'
 import Guid from 'guid'
@@ -35,6 +36,7 @@ class Root extends Component {
   }
 
   forget() {
+    reduxStore.dispatch(forgetMe())
     store.clear()
     this.setState({ username: null, id: null })
   }

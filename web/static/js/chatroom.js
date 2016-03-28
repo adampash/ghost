@@ -46,7 +46,8 @@ class Chatroom extends Component {
   }
 
   handleSendMessage(message) {
-    let { dispatch } = this.props
+    let { dispatch, username, id } = this.props
+    message.user = { username, id }
     dispatch(sendMessage(message))
   }
 

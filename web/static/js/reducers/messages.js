@@ -1,8 +1,6 @@
-import { NEW_MESSAGE, SEND_MESSAGE } from '../actions/messages'
+import { NEW_MESSAGE, SEND_MESSAGE, FORGET_ME } from '../actions/messages'
 
-const initialState = [
-  { text: "HI", id: Math.random() * 1000000 }
-]
+const initialState = []
 
 export function messages(state = initialState, action) {
   switch (action.type) {
@@ -10,6 +8,8 @@ export function messages(state = initialState, action) {
       return [ ...state, action.message ]
     case SEND_MESSAGE:
       return [ ...state, action.message ]
+    case FORGET_ME:
+      return []
     default:
       return state
     }
