@@ -2,6 +2,8 @@ export const NEW_MESSAGE = 'NEW_MESSAGE'
 export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const FORGET_ME = 'FORGET_ME'
 
+import Wire from '../wire'
+
 export function newMessage(message) {
   return {
     type: NEW_MESSAGE,
@@ -10,6 +12,7 @@ export function newMessage(message) {
 }
 
 export function sendMessage(message) {
+  Wire.send(message)
   return {
     type: SEND_MESSAGE,
     message

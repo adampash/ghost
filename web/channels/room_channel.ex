@@ -12,6 +12,14 @@ defmodule Ghost.RoomChannel do
   end
 
   @doc """
+  Handle exchanging messages in case I don't do webrtc
+  """
+  def handle_in("message", payload, socket) do
+    broadcast!(socket, "new_message", payload)
+    {:noreply, socket}
+  end
+
+  @doc """
   Handle signaling messages for webrtc
   """
   def handle_in("signal", payload, socket) do

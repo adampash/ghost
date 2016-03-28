@@ -1,9 +1,12 @@
 import { Socket } from 'phoenix'
 import DataChannel from './datachannel'
+import ReduxStore from './reduxStore'
+import { newMessage } from './actions/messages'
 
 let Wire = {
-  connect: function(room_id, user_id) {
+  connect(room_id, user_id) {
     this.room_id = room_id
+    this.user_id = user_id
     this.socket = new Socket("/socket",
     {
       // logger: (kind, msg, data) => {
@@ -16,15 +19,27 @@ let Wire = {
       .receive("ok", resp => {
         console.log("Joined successfully", resp)
         // Peers.init(room_id, this.channel)
-        DataChannel.init(room_id, user_id, this.channel)
+        // DataChannel.init(room_id, user_id, this.channel)
       })
       .receive("error", resp => { console.log("Unable to join", resp) })
 
-    // this.channel.on("post_update", this.handlePayload.bind(this))
-    // this.channel.on("pong", this.handlePayload.bind(this))
+    this.channel.on("new_message", this.handleNewMessage.bind(this))
   },
 
-  signal: function() {
+  handleNewMessage(payload) {
+    let { message } = payload
+    if (message.user.id === this.user_id) return
+    ReduxStore.dispatch(newMessage(message))
+  },
+
+  send(message) {
+    this.channel.push('message', {
+      type: "new_message",
+      message
+    })
+  },
+
+  signal() {
     this.channel.push('signal', {
       type: 'user_here',
       room: this.room_id
@@ -32,7 +47,7 @@ let Wire = {
 
   },
 
-  disconnect: function() {
+  disconnect() {
     this.channel.leave()
     this.socket.disconnect()
   }

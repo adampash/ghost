@@ -27,7 +27,6 @@ class Chatroom extends Component {
 
   render() {
     let { username, id, room_id, messages } = this.props
-    console.log(username, id, room_id)
     return (
       <div className="chatroom">
         <EmptyRoomMessage />

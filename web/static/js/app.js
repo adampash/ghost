@@ -12,7 +12,6 @@ export default class App extends Component {
 
   render() {
     let { username, id, room_id } = this.props
-    console.log(username, id, room_id)
     if (room_id) {
       return (
         <div>

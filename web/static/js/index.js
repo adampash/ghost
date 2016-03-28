@@ -4,8 +4,7 @@ import '../css/app.scss'
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore, dispatch } from 'redux'
-import rootReducer from './reducers/index'
+import ReduxStore from './reduxStore'
 import { forgetMe } from './actions/messages'
 
 import store from 'store'
@@ -15,8 +14,6 @@ import App from './app'
 import Login from './login'
 
 window.React = React
-
-let reduxStore = createStore(rootReducer)
 
 
 class Root extends Component {
@@ -36,7 +33,7 @@ class Root extends Component {
   }
 
   forget() {
-    reduxStore.dispatch(forgetMe())
+    ReduxStore.dispatch(forgetMe())
     store.clear()
     this.setState({ username: null, id: null })
   }
@@ -64,7 +61,7 @@ class Root extends Component {
 }
 
 render(
-  <Provider store={ reduxStore }>
+  <Provider store={ ReduxStore }>
     <Root />
   </Provider>,
   document.getElementById('root'))
