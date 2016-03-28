@@ -2,47 +2,21 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import { sendMessage } from './actions/messages'
 
-import '../../../deps/phoenix_html/priv/static/phoenix_html'
-import { Socket } from 'phoenix'
+// import '../../../deps/phoenix_html/priv/static/phoenix_html'
+import Wire from './wire'
 
 import Input from './chatroom/input'
 import MessageList from './chatroom/message_list'
 import EmptyRoomMessage from './chatroom/empty_room_message'
 
 class Chatroom extends Component {
-  constructor(props) {
-    super()
-    let { room_id } = props
-    this.socket = new Socket("/socket",
-    {
-      logger: (kind, msg, data) => {
-        console.log(`${kind}: ${msg}`, data)
-      }
-    })
-    this.socket.connect()
-    this.channel = this.socket.channel(`rooms:${room_id}`, {})
-    this.channel.join()
-    .receive("ok", resp => { console.log("Joined successfully", resp) })
-    .receive("error", resp => { console.log("Unable to join", resp) })
-
-    this.channel.on("post_update", this.handlePayload.bind(this))
-    this.channel.on("pong", this.handlePayload.bind(this))
-  }
-
   componentDidMount() {
-    this.ping = setInterval(() => {
-      this.channel.push("ping", { message: "HI" })
-    }, 10000)
+    let { room_id, id } = this.props
+    Wire.connect(room_id, id)
   }
 
   componentWillUnmount() {
-    clearInterval(this.ping)
-    this.channel.leave()
-    this.socket.disconnect()
-  }
-
-  handlePayload(payload) {
-    console.log(payload)
+    Wire.disconnect()
   }
 
   handleSendMessage(message) {

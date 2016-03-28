@@ -11,6 +11,14 @@ defmodule Ghost.RoomChannel do
     {:reply, {:ok, payload}, socket}
   end
 
+  @doc """
+  Handle signaling messages for webrtc
+  """
+  def handle_in("signal", payload, socket) do
+    broadcast!(socket, "signaling_message", payload)
+    {:noreply, socket}
+  end
+
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (rooms:lobby).
   def handle_in("shout", payload, socket) do

@@ -29,7 +29,7 @@ class Root extends Component {
   }
 
   saveName(username) {
-    let id = Guid.create().value
+    let id = Guid.raw()
     store.set('username', username)
     store.set('id', id)
     this.setState({ username, id, room_id })
