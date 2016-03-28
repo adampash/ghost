@@ -1,5 +1,5 @@
 import { Socket } from 'phoenix'
-import DataChannel from './datachannel'
+// import DataChannel from './datachannel'
 import ReduxStore from './reduxStore'
 import { newMessage } from './actions/messages'
 

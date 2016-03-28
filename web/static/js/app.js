@@ -11,11 +11,11 @@ export default class App extends Component {
   }
 
   render() {
-    let { username, id, room_id } = this.props
+    let { user, room_id } = this.props
     if (room_id) {
       return (
         <div>
-          <Chatroom username={ username } room_id={ room_id } id={ id } />
+          <Chatroom user={ user } room_id={ room_id } />
         </div>
       )
     } else {

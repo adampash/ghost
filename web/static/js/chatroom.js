@@ -11,8 +11,13 @@ import EmptyRoomMessage from './chatroom/empty_room_message'
 
 class Chatroom extends Component {
   componentDidMount() {
-    let { room_id, id } = this.props
-    Wire.connect(room_id, id)
+    let { room_id, user } = this.props
+    Wire.connect(room_id, user.id)
+  }
+
+  componentDidUpdate() {
+    console.log('hy')
+    this.room.scrollTop = this.room.scrollHeight
   }
 
   componentWillUnmount() {
@@ -20,17 +25,20 @@ class Chatroom extends Component {
   }
 
   handleSendMessage(message) {
-    let { dispatch, username, id } = this.props
-    message.user = { username, id }
+    let { dispatch, user } = this.props
+    message.user = user
+    message.timestamp = Date.now()
     dispatch(sendMessage(message))
   }
 
   render() {
-    let { username, id, room_id, messages } = this.props
+    let { user, room_id, messages } = this.props
     return (
-      <div className="chatroom">
-        <EmptyRoomMessage />
-        <MessageList messages={ messages } />
+      <div>
+        <div className="chatroom" ref={ (el) => this.room = el }>
+          <EmptyRoomMessage />
+          <MessageList messages={ messages } />
+        </div>
         <Input onSend={ this.handleSendMessage.bind(this) }/>
       </div>
     )

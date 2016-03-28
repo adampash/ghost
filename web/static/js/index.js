@@ -14,36 +14,61 @@ import App from './app'
 import Login from './login'
 
 window.React = React
+window.console.error = (function() {
+  var error = console.error
 
+  return function(exception) {
+    if ((exception + '').indexOf('Warning: A component is `contentEditable`') != 0) {
+      error.apply(console, arguments)
+    }
+  }
+})()
+
+function generateColor() {
+  let colors = ['r', 'g', 'b'].reduce( (acc, color) => {
+    acc[color] = Math.floor(Math.random() * 255)
+    return acc
+  }, {})
+  return `rgb(${colors.r},${colors.g},${colors.b})`
+}
 
 class Root extends Component {
   constructor() {
     super()
     this.state = {
-      username: store.get('username') || null,
-      id: store.get('id') || null,
+      user: store.get('user') || null,
     }
   }
 
   saveName(username) {
     let id = Guid.raw()
-    store.set('username', username)
-    store.set('id', id)
-    this.setState({ username, id, room_id })
+    let color = generateColor()
+    // store.set('username', username)
+    // store.set('id', id)
+    // store.set('color', color)
+    let user = {
+      username,
+      id,
+      color,
+    }
+    store.set('user', user)
+    this.setState({
+      user
+    })
   }
 
   forget() {
     ReduxStore.dispatch(forgetMe())
     store.clear()
-    this.setState({ username: null, id: null })
+    this.setState({ user: null })
   }
 
   render() {
-    let { username, id } = this.state
-    if (username) {
+    let { user } = this.state
+    if (user) {
       return (
         <div>
-          <App username={ username } id={ id } room_id={ room_id } />
+          <App user={ user } room_id={ room_id } />
           <div className="top">
             <div className="forget" onClick={ this.forget.bind(this) }>
               Forget me
