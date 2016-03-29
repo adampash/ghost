@@ -19,7 +19,7 @@ defmodule Ghost.Mixfile do
   def application do
     [mod: {Ghost, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex, :httpoison]]
+                    :phoenix_ecto, :httpoison]]
   end
 
   # Specifies which paths to compile per environment.
