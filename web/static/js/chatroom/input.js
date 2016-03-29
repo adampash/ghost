@@ -2,7 +2,7 @@ import { Component } from 'react'
 // import Editor from 'draft-js-plugins-editor'
 // import createLinkifyPlugin from 'draft-js-linkify-plugin'
 
-import { Editor, EditorState, getDefaultKeyBinding } from 'draft-js'
+// import { Editor, EditorState, getDefaultKeyBinding } from 'draft-js'
 
 // const linkifyPlugin = createLinkifyPlugin()
 // const plugins = [
@@ -13,24 +13,50 @@ export default class Input extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      editorState: EditorState.createEmpty()
+      startedTyping: false,
+      lastTyped: null,
+      // editorState: EditorState.createEmpty()
     }
   }
 
   componentDidMount() {
     this.focusInput()
+    this.typingCheck = setInterval(this.checkTyping.bind(this), 500)
   }
 
-  onChange = (editorState) => {
-    this.setState({
-      editorState,
-    })
+  checkTyping() {
+    let { onTyping } = this.props
+    let { startedTyping, lastTyped } = this.state
+    let now = Date.now()
+    if (startedTyping && now - lastTyped < 2000) {
+      onTyping(now)
+    }
   }
+
+  // onChange = (editorState) => {
+  //   this.setState({
+  //     editorState,
+  //   })
+  // }
 
   handleChange(e) {
     if (e.key === "Enter") {
+      this.setState({ startedTyping: false })
       this.handleSubmit(e)
+    } else {
+      let { startedTyping, lastTyped } = this.state
+      if (startedTyping) {
+        this.setState({
+          lastTyped: Date.now(),
+        })
+      } else {
+        this.setState({
+          startedTyping: true,
+          lastTyped: Date.now(),
+        })
+      }
     }
+
   }
 
   handleSubmit(e) {

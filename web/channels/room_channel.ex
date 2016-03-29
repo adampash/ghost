@@ -20,6 +20,14 @@ defmodule Ghost.RoomChannel do
   end
 
   @doc """
+  Handle typing user signaling
+  """
+  def handle_in("typing", payload, socket) do
+    broadcast!(socket, "user_typing", payload)
+    {:noreply, socket}
+  end
+
+  @doc """
   Handle signaling messages for webrtc
   """
   def handle_in("signal", payload, socket) do
@@ -43,7 +51,7 @@ defmodule Ghost.RoomChannel do
   end
 
   # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
-  end
+  # defp authorized?(_payload) do
+  #   true
+  # end
 end

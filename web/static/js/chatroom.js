@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
-import { sendMessage } from './actions/messages'
+import { sendMessage, broadcastTyping } from './actions/messages'
 
 // import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import Wire from './wire'
@@ -8,6 +8,7 @@ import Wire from './wire'
 import Input from './chatroom/input'
 import MessageList from './chatroom/message_list'
 import EmptyRoomMessage from './chatroom/empty_room_message'
+import TypingUsers from './chatroom/typing_users'
 
 class Chatroom extends Component {
   componentDidMount() {
@@ -16,7 +17,6 @@ class Chatroom extends Component {
   }
 
   componentDidUpdate() {
-    console.log('hy')
     this.room.scrollTop = this.room.scrollHeight
   }
 
@@ -32,23 +32,27 @@ class Chatroom extends Component {
   }
 
   render() {
-    let { user, room_id, messages } = this.props
+    let { user, room_id, messages, dispatch, typing_users } = this.props
     return (
       <div>
         <div className="chatroom" ref={ (el) => this.room = el }>
           <EmptyRoomMessage />
           <MessageList messages={ messages } />
         </div>
-        <Input onSend={ this.handleSendMessage.bind(this) }/>
+        <Input onSend={ this.handleSendMessage.bind(this) }
+          onTyping={ (time) => dispatch(broadcastTyping(time, user)) }
+        />
+        <TypingUsers users={ typing_users } />
       </div>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  let { messages } = state
+  let { messages, typing_users } = state
   return {
-    messages
+    messages,
+    typing_users,
   }
 }
 

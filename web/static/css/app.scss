@@ -1,3 +1,5 @@
+$fonts: HelveticaNeue, Helvetica, sans-serif;
+
 * {
   box-sizing: border-box;
 }
@@ -56,7 +58,7 @@ body {
 // CHAT INPUT
 .input-container {
   border: 1px solid $prim-color;
-  bottom: 10px;
+  bottom: 20px;
   left: 10px;
   position: fixed;
   right: 10px;
@@ -72,6 +74,16 @@ body {
     width: 100%;
   }
 
+}
+
+// TYPING MESSAGE
+.typing-users {
+  bottom: 5px;
+  color: rgb(77, 77, 77);
+  font-family: $fonts;
+  font-size: 10px;
+  left: 12px;
+  position: absolute;
 }
 
 // MESSAGE

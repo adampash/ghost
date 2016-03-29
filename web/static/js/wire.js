@@ -1,7 +1,7 @@
 import { Socket } from 'phoenix'
 // import DataChannel from './datachannel'
 import ReduxStore from './reduxStore'
-import { newMessage } from './actions/messages'
+import { newMessage, userTyping, refresh } from './actions/messages'
 
 let Wire = {
   connect(room_id, user_id) {
@@ -24,6 +24,7 @@ let Wire = {
       .receive("error", resp => { console.log("Unable to join", resp) })
 
     this.channel.on("new_message", this.handleNewMessage.bind(this))
+    this.channel.on("user_typing", this.handleUserTyping.bind(this))
   },
 
   handleNewMessage(payload) {
@@ -32,10 +33,23 @@ let Wire = {
     ReduxStore.dispatch(newMessage(message))
   },
 
+  handleUserTyping(payload) {
+    let { user } = payload
+    if (user.id === this.user_id) return
+    ReduxStore.dispatch(userTyping(user))
+  },
+
   send(message) {
     this.channel.push('message', {
       type: "new_message",
       message
+    })
+  },
+
+  typing(user) {
+    this.channel.push('typing', {
+      type: "typing",
+      user,
     })
   },
 
