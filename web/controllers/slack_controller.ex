@@ -2,12 +2,15 @@ defmodule Ghost.SlackController do
   use Ghost.Web, :controller
 
   @slack_token System.get_env("SLACK_TOKEN")
+  @slack_webhook System.get_env("SLACK_WEBHOOK_URL")
 
-  def generate(conn, %{"command" => "/ghost", "text" => text, "token" => token} = params) do
+  def generate(conn, %{"command" => "/ghost", "text" => text, "token" => token, "user_name" => username} = params) do
     case token do
       @slack_token ->
+        conn = generate_url(conn)
         conn
-        |> json(%{"text" => "#{Atom.to_string(conn.scheme)}://#{conn.host}/#{UUID.uuid4()}"})
+        |> notify_users(text, username)
+        |> json(%{"text" => conn.assigns.url})
       _ ->
         conn
         |> put_status(:not_found)
@@ -15,12 +18,35 @@ defmodule Ghost.SlackController do
     end
   end
 
-end
+  defp notify_users(conn, text, username) do
+    text
+    |> get_users()
+    |> Enum.map(fn user -> notify_user(conn, user, username) end)
+    conn
+  end
 
-token2 = "abc"
-token = "abc"
+  defp notify_user(conn, user, username) do
+    HTTPoison.post!(@slack_webhook, generate_response(conn, user, username))
+  end
 
-case token do
-  ^token2 -> IO.inspect(token2)
-  _ -> false
+  defp generate_url(conn) do
+    conn
+    |> assign(:url, "#{Atom.to_string(conn.scheme)}://#{conn.host}/#{UUID.uuid4()}")
+  end
+
+  defp generate_response(conn, user, username) do
+    Poison.encode! %{
+      text: "#{username} wants you to join this Ghost conversation: #{conn.assigns.url}",
+      username: "Ghost",
+      icon_emoji: ":ghost:",
+      channel: user,
+    }
+  end
+
+  defp get_users(string) do
+    string
+    |> String.split(" ", trim: true)
+    |> Enum.filter(&(String.at(&1, 0) == "@"))
+  end
+
 end
