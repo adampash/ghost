@@ -51,7 +51,7 @@ defmodule Ghost.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
      "ecto.reset": ["ecto.drop", "ecto.setup"],
-      aliases: ["phoenix.digest": "js.digest"]
+      aliases: ["phoenix.digest": "ghost.digest"]
    ]
   end
 end

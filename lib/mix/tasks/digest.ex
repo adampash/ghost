@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Js.Digest do
+defmodule Mix.Tasks.Ghost.Digest do
   use Mix.Task
 
   def run(args) do
