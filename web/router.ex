@@ -11,6 +11,8 @@ defmodule Ghost.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
+
+    get "/generate", SlackController, :generate
   end
 
   scope "/", Ghost do

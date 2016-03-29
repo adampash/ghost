@@ -6,7 +6,8 @@ defmodule Ghost.PageController do
   end
 
   def index(conn, _params) do
-    render conn, "index.html"
+    conn
+    |> redirect(to: "/#{UUID.uuid4()}")
   end
 
 end

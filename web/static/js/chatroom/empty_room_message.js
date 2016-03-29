@@ -9,7 +9,7 @@ export default class EmptyRoomMessage extends Component {
   render() {
     return (
       <div className="welcome-message">
-        <h2>You're in a <span className="ghost">Ghost</span> channel</h2>
+        <h2>You're in a private <span className="ghost">Ghost</span> channel</h2>
         <p>This room, and everything you say in it, is ephemeral.</p>
         <p>
           That means that when you start sending messages, only people who
