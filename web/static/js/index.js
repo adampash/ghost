@@ -8,7 +8,7 @@ import ReduxStore from './reduxStore'
 import { forgetMe } from './actions/messages'
 
 import store from 'store'
-import Guid from 'guid'
+import uuid from 'node-uuid'
 
 import App from './app'
 import Login from './login'
@@ -41,7 +41,7 @@ class Root extends Component {
   }
 
   saveName(username) {
-    let id = Guid.raw()
+    let id = uuid.v4()
     let color = generateColor()
     // store.set('username', username)
     // store.set('id', id)
