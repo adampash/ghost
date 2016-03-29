@@ -11,8 +11,13 @@ export default class MessageList extends Component {
     let { messages } = this.props
     return (
       <div>
-      { messages.map( (message) => {
-        return <Message key={ message.id } message={ message } />
+      { messages.map( (message, i) => {
+        return (
+          <Message key={ message.id }
+            message={ message }
+            prevMessage={ messages[i - 1] }
+          />
+        )
       })}
       </div>
     )

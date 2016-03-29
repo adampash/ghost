@@ -12,17 +12,24 @@ export default class Message extends Component {
   }
 
   render() {
-    let { message } = this.props
+    let { message, prevMessage } = this.props
     let { user, timestamp } = message
-    console.log(timestamp)
-    let formattedTime = moment(new Date(timestamp)).format("h:mm a")
-    console.log(user.color)
+    let formattedTime = moment(new Date(timestamp)).format("h:mm")
+    let hideUser = false
+    if (prevMessage && prevMessage.user.id == user.id) {
+      hideUser = true
+    }
+    if (prevMessage && timestamp - prevMessage.timestamp > 300000) {
+      hideUser = false
+    }
     return (
-      <div className="message">
-        <div style={{ backgroundColor: user.color }} className="avatar"></div>
+      <div className={ "message" + (hideUser ? " hide-user" : "") }>
+        <div style={{ backgroundColor: (hideUser ? "none" : user.color) }} className="avatar">
+          <span className="timestamp">{ formattedTime }</span>
+        </div>
         <div className="name-and-text">
           <div className="user">
-            { user.username }
+            <span className="username">{ user.username }</span>
             <span className="timestamp">{ formattedTime }</span>
           </div>
           <div className="text">
