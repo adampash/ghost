@@ -17,6 +17,7 @@ export default class EmptyRoomMessage extends Component {
         </p>
         <p>
           Someone who joins later will only see messages you send after they join.
+          Anyone with a link to this room can join the conversation.
         </p>
         <p>
           Nothing is ever saved to a database, and when you leave this room—or even
