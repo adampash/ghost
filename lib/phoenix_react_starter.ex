@@ -13,6 +13,7 @@ defmodule Ghost do
       supervisor(Ghost.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Ghost.Worker, [arg1, arg2, arg3]),
+      supervisor(Ghost.Presence, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

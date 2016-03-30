@@ -172,3 +172,20 @@ div {
     }
   }
 }
+
+// USER LIST
+.user-list {
+  font-family: $fonts;
+  left: 10px;
+  position: absolute;
+  top: 50px;
+
+  h4 {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .user {
+    font-size: 12px;
+  }
+}

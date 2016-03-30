@@ -1,8 +1,19 @@
 defmodule Ghost.RoomChannel do
   use Ghost.Web, :channel
+  alias Ghost.Presence
 
   def join("rooms:" <> room_id, payload, socket) do
+    send self(), :after_join
     {:ok, socket}
+  end
+
+  def handle_info(:after_join, socket) do
+    Presence.track(socket, socket.assigns.user["id"], %{
+        device: "browser",
+        user: socket.assigns.user,
+      })
+      push socket, "presence_state", Presence.list(socket)
+      {:noreply, socket}
   end
 
   # Channels can be used in a request/response fashion

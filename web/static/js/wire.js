@@ -1,20 +1,28 @@
-import { Socket } from 'phoenix'
+import { Socket, Presence } from 'phoenix'
 // import DataChannel from './datachannel'
 import ReduxStore from './reduxStore'
 import { newMessage, userTyping, refresh } from './actions/messages'
+import { presenceState, presenceDiff } from './actions/users'
 
 let Wire = {
-  connect(room_id, user_id) {
+  connect(room_id, user) {
     this.room_id = room_id
-    this.user_id = user_id
+    this.user_id = user.id
     this.socket = new Socket("/socket",
     {
+      params: { user }
       // logger: (kind, msg, data) => {
       //   console.log(`${kind}: ${msg}`, data)
       // }
     })
     this.socket.connect()
     this.channel = this.socket.channel(`rooms:${room_id}`, {})
+
+    this.channel.on("new_message", this.handleNewMessage.bind(this))
+    this.channel.on("user_typing", this.handleUserTyping.bind(this))
+    this.channel.on("presence_state", this.handlePresenceState.bind(this))
+    this.channel.on("presence_diff", this.handlePresenceDiff.bind(this))
+
     this.channel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp)
@@ -22,9 +30,18 @@ let Wire = {
         // DataChannel.init(room_id, user_id, this.channel)
       })
       .receive("error", resp => { console.log("Unable to join", resp) })
+  },
 
-    this.channel.on("new_message", this.handleNewMessage.bind(this))
-    this.channel.on("user_typing", this.handleUserTyping.bind(this))
+  handlePresenceState(state) {
+    console.log("pstate", state)
+    ReduxStore.dispatch(presenceState(state))
+    // Presence.syncState(state)
+  },
+
+  handlePresenceDiff(state) {
+    console.log("dstate", state)
+    ReduxStore.dispatch(presenceDiff(state))
+    // Presence.syncDiff(oldState, newState)
   },
 
   handleNewMessage(payload) {

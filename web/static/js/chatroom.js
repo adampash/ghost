@@ -1,12 +1,14 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import { sendMessage, broadcastTyping, awayMessage } from './actions/messages'
+import { Presence } from 'phoenix'
 
 // import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import Wire from './wire'
 
 import Input from './chatroom/input'
 import MessageList from './chatroom/message_list'
+import UserList from './chatroom/user_list'
 import EmptyRoomMessage from './chatroom/empty_room_message'
 import TypingUsers from './chatroom/typing_users'
 
@@ -18,7 +20,7 @@ class Chatroom extends Component {
 
   componentDidMount() {
     let { room_id, user } = this.props
-    Wire.connect(room_id, user.id)
+    Wire.connect(room_id, user)
     window.onfocus = this.setFocusStatus.bind(this)
     window.onblur = this.setFocusStatus.bind(this)
     Notification.requestPermission()
@@ -27,8 +29,8 @@ class Chatroom extends Component {
   componentDidUpdate() {
     // let scrollTop = this.room.scrollHeight - this.room.offsetHeight
     let scrollTop = this.room.scrollHeight - this.room.scrollTop
-    console.log(this.room.scrollHeight, this.room.offsetHeight, scrollTop)
-    console.log(scrollTop - this.room.offsetHeight)
+    // console.log(this.room.scrollHeight, this.room.offsetHeight, scrollTop)
+    // console.log(scrollTop - this.room.offsetHeight)
     if (scrollTop - this.room.offsetHeight < 90) {
       this.room.scrollTop = this.room.scrollHeight
     }
@@ -59,7 +61,8 @@ class Chatroom extends Component {
   }
 
   render() {
-    let { user, room_id, messages, dispatch, typing_users } = this.props
+    let { user, room_id, messages, dispatch, typing_users, users } = this.props
+    console.log(users)
     let { focus } = this.state
     return (
       <div>
@@ -67,6 +70,7 @@ class Chatroom extends Component {
           <EmptyRoomMessage />
           <MessageList messages={ messages } focused={ focus } />
         </div>
+        <UserList users={ users } />
         <Input onSend={ this.handleSendMessage.bind(this) }
           onTyping={ (time) => dispatch(broadcastTyping(time, user)) }
         />
@@ -76,11 +80,13 @@ class Chatroom extends Component {
   }
 }
 
+
 const mapStateToProps = (state, ownProps) => {
-  let { messages, typing_users } = state
+  let { messages, typing_users, users } = state
   return {
     messages,
     typing_users,
+    users,
   }
 }
 
