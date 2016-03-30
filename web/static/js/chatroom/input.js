@@ -43,20 +43,23 @@ export default class Input extends Component {
     if (e.key === "Enter") {
       this.setState({ startedTyping: false })
       this.handleSubmit(e)
-    } else {
-      let { startedTyping, lastTyped } = this.state
-      if (startedTyping) {
-        this.setState({
-          lastTyped: Date.now(),
-        })
-      } else {
-        this.setState({
-          startedTyping: true,
-          lastTyped: Date.now(),
-        })
-      }
+      return
     }
 
+    let { metaKey, keyCode } = e
+    if (metaKey || keyCode < 18) return
+
+    let { startedTyping, lastTyped } = this.state
+    if (startedTyping) {
+      this.setState({
+        lastTyped: Date.now(),
+      })
+    } else {
+      this.setState({
+        startedTyping: true,
+        lastTyped: Date.now(),
+      })
+    }
   }
 
   handleSubmit(e) {
