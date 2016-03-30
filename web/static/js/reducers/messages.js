@@ -1,14 +1,30 @@
-import { NEW_MESSAGE, SEND_MESSAGE, FORGET_ME, USER_TYPING, REFRESH } from '../actions/messages'
+import {
+  NEW_MESSAGE,
+  SEND_MESSAGE,
+  FORGET_ME,
+  USER_TYPING,
+  REFRESH,
+  AWAY_MESSAGE,
+} from '../actions/messages'
 import R from 'ramda'
 
 const initialState = []
+
+function messagesWithoutAway(state) {
+  return R.filter(
+    ((m) => m.id !== "away_message"),
+    state
+  )
+}
 
 export function messages(state = initialState, action) {
   switch (action.type) {
     case NEW_MESSAGE:
       return [ ...state, action.message ]
     case SEND_MESSAGE:
-      return [ ...state, action.message ]
+      return messagesWithoutAway([ ...state, action.message ])
+    case AWAY_MESSAGE:
+      return [ ...state, { id: "away_message", user: {} }]
     case FORGET_ME:
       return []
     default:

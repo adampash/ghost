@@ -3,9 +3,16 @@ export const SEND_MESSAGE = 'SEND_MESSAGE'
 export const FORGET_ME = 'FORGET_ME'
 export const USER_TYPING = 'USER_TYPING'
 export const REFRESH = 'REFRESH'
+export const AWAY_MESSAGE = 'AWAY_MESSAGE'
 
 import Wire from '../wire'
 import ReduxStore from '../reduxStore'
+
+export function awayMessage() {
+  return {
+    type: AWAY_MESSAGE,
+  }
+}
 
 export function refresh(message) {
   return {

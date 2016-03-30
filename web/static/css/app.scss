@@ -21,6 +21,7 @@ body {
   right: 10px;
   top: 40px;
   z-index: 1000;
+
 }
 
 .forget {
@@ -131,6 +132,28 @@ body {
   }
 
 }
+
+// AWAY MESSAGE
+$red: rgba(150, 54, 54, .8);
+
+.away-message {
+  background: $red;
+  color: $red;
+  font-family: $fonts;
+  font-size: 10px;
+  height: 1px;
+  text-align: right;
+}
+
+div {
+  :last-of-type {
+    &.away-message {
+      display: none;
+    }
+  }
+}
+
+
 
 .hide-user {
   .avatar {

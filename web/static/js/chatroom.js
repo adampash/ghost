@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
-import { sendMessage, broadcastTyping } from './actions/messages'
+import { sendMessage, broadcastTyping, awayMessage } from './actions/messages'
 
 // import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import Wire from './wire'
@@ -41,9 +41,14 @@ class Chatroom extends Component {
   }
 
   setFocusStatus(e) {
+    let focus = e.type === "focus"
     this.setState({
-      focus: e.type === "focus"
+      focus
     })
+    if (!focus) {
+      let { dispatch } = this.props
+      dispatch(awayMessage())
+    }
   }
 
   handleSendMessage(message) {
