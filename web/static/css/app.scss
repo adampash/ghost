@@ -109,7 +109,7 @@ body {
     width: 30px;
 
     .timestamp {
-      display: none;
+      opacity: 0;
     }
   }
 
@@ -143,8 +143,9 @@ body {
 
   &:hover {
     .timestamp {
-      display: inline;
-      margin: 0;
+      margin-left: 0;
+      margin-right: 5px;
+      opacity: 1;
     }
   }
 }

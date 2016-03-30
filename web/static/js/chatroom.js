@@ -25,7 +25,13 @@ class Chatroom extends Component {
   }
 
   componentDidUpdate() {
-    this.room.scrollTop = this.room.scrollHeight
+    // let scrollTop = this.room.scrollHeight - this.room.offsetHeight
+    let scrollTop = this.room.scrollHeight - this.room.scrollTop
+    console.log(this.room.scrollHeight, this.room.offsetHeight, scrollTop)
+    console.log(scrollTop - this.room.offsetHeight)
+    if (scrollTop - this.room.offsetHeight < 90) {
+      this.room.scrollTop = this.room.scrollHeight
+    }
   }
 
   componentWillUnmount() {

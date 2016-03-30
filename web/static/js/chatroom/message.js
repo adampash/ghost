@@ -41,9 +41,11 @@ export default class Message extends Component {
           ignore={ focused }
           title={ `${user.username}:` }
           timeout={ 3000 }
+          onClick={ (e) => window.focus() }
           options={{
             icon: "/images/ghost.png",
             body: message.text,
+            tag: "message_notification"
           }}
         />
 
