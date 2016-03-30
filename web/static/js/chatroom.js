@@ -11,9 +11,17 @@ import EmptyRoomMessage from './chatroom/empty_room_message'
 import TypingUsers from './chatroom/typing_users'
 
 class Chatroom extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { focus: true }
+  }
+
   componentDidMount() {
     let { room_id, user } = this.props
     Wire.connect(room_id, user.id)
+    window.onfocus = this.setFocusStatus.bind(this)
+    window.onblur = this.setFocusStatus.bind(this)
+    Notification.requestPermission()
   }
 
   componentDidUpdate() {
@@ -22,6 +30,14 @@ class Chatroom extends Component {
 
   componentWillUnmount() {
     Wire.disconnect()
+    window.onfocus = null
+    window.onblur = null
+  }
+
+  setFocusStatus(e) {
+    this.setState({
+      focus: e.type === "focus"
+    })
   }
 
   handleSendMessage(message) {
@@ -33,11 +49,12 @@ class Chatroom extends Component {
 
   render() {
     let { user, room_id, messages, dispatch, typing_users } = this.props
+    let { focus } = this.state
     return (
       <div>
         <div className="chatroom" ref={ (el) => this.room = el }>
           <EmptyRoomMessage />
-          <MessageList messages={ messages } />
+          <MessageList messages={ messages } focused={ focus } />
         </div>
         <Input onSend={ this.handleSendMessage.bind(this) }
           onTyping={ (time) => dispatch(broadcastTyping(time, user)) }

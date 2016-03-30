@@ -9,6 +9,7 @@ export default class EmptyRoomMessage extends Component {
   render() {
     return (
       <div className="welcome-message">
+        <img src="/images/ghost.png" />
         <h2>You're in a private <span className="ghost">Ghost</span> channel</h2>
         <p>This room, and everything you say in it, is ephemeral.</p>
         <p>

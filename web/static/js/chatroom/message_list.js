@@ -8,7 +8,7 @@ export default class MessageList extends Component {
   }
 
   render() {
-    let { messages } = this.props
+    let { messages, focused } = this.props
     return (
       <div>
       { messages.map( (message, i) => {
@@ -16,6 +16,7 @@ export default class MessageList extends Component {
           <Message key={ message.id }
             message={ message }
             prevMessage={ messages[i - 1] }
+            focused={ focused }
           />
         )
       })}

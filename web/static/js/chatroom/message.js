@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import moment from 'moment'
+import Notification  from 'react-web-notification'
 
 export default class Message extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ export default class Message extends Component {
   }
 
   render() {
-    let { message, prevMessage } = this.props
+    let { message, prevMessage, focused } = this.props
     let { user, timestamp } = message
     let formattedTime = moment(new Date(timestamp)).format("h:mm")
     let hideUser = false
@@ -36,6 +37,16 @@ export default class Message extends Component {
             { message.text }
           </div>
         </div>
+        <Notification
+          ignore={ focused }
+          title={ `${user.username}:` }
+          timeout={ 3000 }
+          options={{
+            icon: "/images/ghost.png",
+            body: message.text,
+          }}
+        />
+
       </div>
     )
   }
