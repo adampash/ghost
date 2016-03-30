@@ -22,6 +22,11 @@ export default class Input extends Component {
   componentDidMount() {
     this.focusInput()
     this.typingCheck = setInterval(this.checkTyping.bind(this), 500)
+    window.onkeydown = this.focusInput.bind(this)
+  }
+
+  componentWillUnmount() {
+    window.onkeydown = null
   }
 
   checkTyping() {
