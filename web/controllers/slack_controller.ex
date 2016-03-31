@@ -21,7 +21,7 @@ defmodule Ghost.SlackController do
   defp notify_users(conn, text, username) do
     text
     |> get_users()
-    |> Enum.map(fn user -> notify_user(conn, user, username) end)
+    |> Enum.map(spawn(fn user -> notify_user(conn, user, username) end))
     conn
   end
 
@@ -43,7 +43,16 @@ defmodule Ghost.SlackController do
     }
   end
 
-  defp get_users(string) do
+  @doc """
+  Given a string of arbitrary length and data, parses out and returns
+  a list of @users
+
+  ## Example
+  ```
+    iex> SlackController.get_users("hi it's @jane and @john")
+    ["@jane", "@john"]
+  """
+  def get_users(string) do
     string
     |> String.split(" ", trim: true)
     |> Enum.filter(&(String.at(&1, 0) == "@"))
