@@ -21,7 +21,7 @@ defmodule Ghost.SlackController do
   defp notify_users(conn, text, username) do
     text
     |> get_users()
-    |> Enum.map(spawn(fn user -> notify_user(conn, user, username) end))
+    |> Enum.map(fn user -> notify_user(conn, user, username) end)
     conn
   end
 
