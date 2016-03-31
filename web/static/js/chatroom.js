@@ -23,7 +23,10 @@ class Chatroom extends Component {
     Wire.connect(room_id, user)
     window.onfocus = this.setFocusStatus.bind(this)
     window.onblur = this.setFocusStatus.bind(this)
-    Notification.requestPermission()
+    if (typeof Notification !== "undefined") {
+      Notification.requestPermission()
+    }
+
   }
 
   componentDidUpdate() {

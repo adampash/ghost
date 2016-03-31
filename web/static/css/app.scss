@@ -82,6 +82,10 @@ body {
   right: 10px;
   z-index: 1000000;
 
+  .button {
+    display: none;
+  }
+
   .input {
     border: 0;
     cursor: text;

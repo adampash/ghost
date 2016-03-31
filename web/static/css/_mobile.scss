@@ -1,5 +1,10 @@
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 500px) {
   // phones
+
+  textarea,
+  input {
+    font-size: 16px;
+  }
 
   // CHATROOM
   .chatroom {
@@ -44,19 +49,35 @@
 
   // CHAT INPUT
   .input-container {
-    bottom: 10px;
+    bottom: 0;
     left: 10px;
+
+    form {
+      display: flex;
+      flex-direction: row;
+    }
 
     .input {
       padding: 2px 5px;
+    }
+
+    .button {
+      background-color: rgb(244, 244, 244);
+      border: 0;
+      color: blue;
+      display: inline;
+      font-size: 14px;
+      height: 100%;
+      padding: 10px;
     }
 
   }
 
   // TYPING MESSAGE
   .typing-users {
-    bottom: 55px;
-    left: 12px;
+    bottom: 50px;
+    right: 12px;
+    text-align: right;
   }
 
   // MESSAGE

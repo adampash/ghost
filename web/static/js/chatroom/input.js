@@ -94,6 +94,7 @@ export default class Input extends Component {
           className="input"
           onKeyDown={ this.handleChange.bind(this) }
         />
+        <button className="button">Send</button>
         </form>
       </div>
     )
