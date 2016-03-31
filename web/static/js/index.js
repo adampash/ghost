@@ -69,7 +69,7 @@ class Root extends Component {
       return (
         <div>
           <App user={ user } room_id={ room_id } />
-          <div className="top">
+          <div className="top-bar">
             <div className="forget" onClick={ this.forget.bind(this) }>
               Forget me
             </div>

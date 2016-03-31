@@ -22,6 +22,9 @@ let Wire = {
     this.channel.on("user_typing", this.handleUserTyping.bind(this))
     this.channel.on("presence_state", this.handlePresenceState.bind(this))
     this.channel.on("presence_diff", this.handlePresenceDiff.bind(this))
+    this.channel.onError(e => console.log("something went wrong", e))
+    this.channel.onClose(e => console.log("channel closed", e))
+
 
     this.channel.join()
       .receive("ok", resp => {

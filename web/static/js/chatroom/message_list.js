@@ -12,7 +12,6 @@ export default class MessageList extends Component {
     return (
       <div>
       { messages.map( (message, i) => {
-        console.log(message.id)
         if (message.id === "away_message") {
           return <div className="away-message" key={ message.id }>new messages</div>
         }

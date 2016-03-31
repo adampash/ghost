@@ -62,7 +62,6 @@ class Chatroom extends Component {
 
   render() {
     let { user, room_id, messages, dispatch, typing_users, users } = this.props
-    console.log(users)
     let { focus } = this.state
     return (
       <div>
