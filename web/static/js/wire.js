@@ -29,22 +29,16 @@ let Wire = {
     this.channel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp)
-        // Peers.init(room_id, this.channel)
-        // DataChannel.init(room_id, user_id, this.channel)
       })
       .receive("error", resp => { console.log("Unable to join", resp) })
   },
 
   handlePresenceState(state) {
-    console.log("pstate", state)
     ReduxStore.dispatch(presenceState(state))
-    // Presence.syncState(state)
   },
 
   handlePresenceDiff(state) {
-    console.log("dstate", state)
     ReduxStore.dispatch(presenceDiff(state))
-    // Presence.syncDiff(oldState, newState)
   },
 
   handleNewMessage(payload) {

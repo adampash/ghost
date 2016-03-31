@@ -5,6 +5,7 @@ import { Presence } from 'phoenix'
 
 // import '../../../deps/phoenix_html/priv/static/phoenix_html'
 import Wire from './wire'
+import userDiff from './userDiff'
 
 import Input from './chatroom/input'
 import MessageList from './chatroom/message_list'
@@ -27,6 +28,12 @@ class Chatroom extends Component {
       Notification.requestPermission()
     }
 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    let { dispatch, users } = this.props
+    let nextUsers = nextProps.users
+    userDiff(nextUsers, users, dispatch)
   }
 
   componentDidUpdate() {

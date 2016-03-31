@@ -12,8 +12,12 @@ export default class MessageList extends Component {
     return (
       <div>
       { messages.map( (message, i) => {
+        console.log(message)
         if (message.id === "away_message") {
           return <div className="away-message" key={ message.id }>new messages</div>
+        }
+        if (message.type === "presence_message") {
+          return <div className={ `presence-message ${message.style}`} >{ message.text }</div>
         }
         return (
           <Message key={ message.id }

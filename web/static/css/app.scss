@@ -171,7 +171,24 @@ div {
 }
 
 
+// PRESENCE MESSAGE
+.presence-message {
+  font-family: $fonts;
+  font-size: 12px;
+  margin: 2px 80px;
+  padding: 6px;
+  text-align: center;
 
+  &.join {
+    color: rgb(54, 145, 76);
+  }
+
+  &.left {
+    color: rgb(246, 128, 128);
+  }
+}
+
+// HIDE USER WHEN PREV MESSAGE IS BY USER
 .hide-user {
   .avatar {
     height: 0;

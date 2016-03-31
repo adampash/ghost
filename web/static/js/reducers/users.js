@@ -11,13 +11,16 @@ let listBy = (id, {metas: [first, ...rest]}) => {
 }
 
 export function users(state = initialState, action) {
+  let newState
   switch(action.type) {
     case PRESENCE_SYNC:
       Presence.syncState(presences, action.state)
-      return Presence.list(presences, listBy)
+      newState = Presence.list(presences, listBy)
+      return newState
     case PRESENCE_DIFF:
       Presence.syncDiff(presences, action.state)
-      return Presence.list(presences, listBy)
+      newState = Presence.list(presences, listBy)
+      return newState
     default:
       return state
   }

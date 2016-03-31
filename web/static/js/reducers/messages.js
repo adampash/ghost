@@ -5,6 +5,8 @@ import {
   USER_TYPING,
   REFRESH,
   AWAY_MESSAGE,
+  JOIN_MESSAGE,
+  LEFT_MESSAGE,
 } from '../actions/messages'
 import R from 'ramda'
 
@@ -17,7 +19,32 @@ function messagesWithoutAway(state) {
   )
 }
 
+let generateJoinedMessage = (users) => {
+  return users.map( (user) => {
+    return {
+      id: Math.random() * 10000000,
+      text: `${user.username} is in the room`,
+      type: "presence_message",
+      style: 'join',
+      user: {},
+    }
+  })
+}
+
+let generateLeftMessage = (users) => {
+  return users.map( (user) => {
+    return {
+      id: Math.random() * 10000000,
+      text: `${user.username} is no longer in the room`,
+      type: "presence_message",
+      style: 'left',
+      user: {},
+    }
+  })
+}
+
 export function messages(state = initialState, action) {
+  let newMessages
   switch (action.type) {
     case NEW_MESSAGE:
       return [ ...state, action.message ]
@@ -25,6 +52,12 @@ export function messages(state = initialState, action) {
       return messagesWithoutAway([ ...state, action.message ])
     case AWAY_MESSAGE:
       return [ ...state, { id: "away_message", user: {} }]
+    case JOIN_MESSAGE:
+      newMessages = generateJoinedMessage(action.users)
+      return [ ...state, ...newMessages ]
+    case LEFT_MESSAGE:
+      newMessages = generateLeftMessage(action.users)
+      return [ ...state, ...newMessages ]
     case FORGET_ME:
       return []
     default:
