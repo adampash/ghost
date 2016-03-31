@@ -26,7 +26,9 @@ defmodule Ghost.SlackController do
   end
 
   defp notify_user(conn, user, username) do
-    HTTPoison.post!(@slack_webhook, generate_response(conn, user, username))
+    spawn(fn ->
+      HTTPoison.post!(@slack_webhook, generate_response(conn, user, username))
+    end)
   end
 
   defp generate_url(conn) do
@@ -52,7 +54,7 @@ defmodule Ghost.SlackController do
     iex> SlackController.get_users("hi it's @jane and @john")
     ["@jane", "@john"]
   """
-  def get_users(string) do
+  defp get_users(string) do
     string
     |> String.split(" ", trim: true)
     |> Enum.filter(&(String.at(&1, 0) == "@"))
