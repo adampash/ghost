@@ -9,7 +9,7 @@ defmodule Ghost.RoomChannel do
 
   def handle_info(:after_join, socket) do
     Presence.track(socket, socket.assigns.user["id"], %{
-        device: "browser",
+        # device: "browser",
         user: socket.assigns.user,
       })
       push socket, "presence_state", Presence.list(socket)

@@ -71,17 +71,38 @@ class Chatroom extends Component {
   }
 
   render() {
-    let { user, room_id, messages, dispatch, typing_users, users } = this.props
+    let {
+      user,
+      room_id,
+      messages,
+      dispatch,
+      typing_users,
+      users,
+      online,
+      forget,
+    } = this.props
     let { focus } = this.state
+
     return (
-      <div>
-        <div className="chatroom" ref={ (el) => this.room = el }>
+      <div className={ online ? "" : "offline" }>
+        <div className="top-bar">
+          { !online &&
+            <div className="offline-message">Reconnecting...</div>
+          }
+          <div className="forget" onClick={ forget }>
+            Forget me
+          </div>
+        </div>
+        <div className="chatroom"
+          ref={ (el) => this.room = el }
+        >
           <EmptyRoomMessage />
           <MessageList messages={ messages } focused={ focus } />
         </div>
         <UserList users={ users } />
         <Input onSend={ this.handleSendMessage.bind(this) }
           onTyping={ (time) => dispatch(broadcastTyping(time, user)) }
+          online={ online }
         />
         <TypingUsers users={ typing_users } />
       </div>
@@ -91,11 +112,12 @@ class Chatroom extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  let { messages, typing_users, users } = state
+  let { messages, typing_users, users, online, } = state
   return {
     messages,
     typing_users,
     users,
+    online,
   }
 }
 

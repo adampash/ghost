@@ -69,9 +69,18 @@ export default class Input extends Component {
 
   handleSubmit(e) {
     e.preventDefault()
-    let { onSend } = this.props
+    let { onSend, online } = this.props
     let { value } = this.input
+
     if (value === "") return
+
+    if (!online) {
+      e.stopPropagation()
+      alert("Oops—looks like you're not online")
+      this.input.value = value.replace(/\n$/, "")
+      return false
+    }
+
     this.input.value = ""
     onSend({
       id: Math.random() * 10000000,

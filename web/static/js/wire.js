@@ -3,14 +3,16 @@ import { Socket, Presence } from 'phoenix'
 import ReduxStore from './reduxStore'
 import { newMessage, userTyping, refresh } from './actions/messages'
 import { presenceState, presenceDiff } from './actions/users'
+import { offline, online } from './actions/network'
 
 let Wire = {
   connect(room_id, user) {
+    this.networkDetection()
     this.room_id = room_id
     this.user_id = user.id
     this.socket = new Socket("/socket",
     {
-      params: { user }
+      params: { user },
       // logger: (kind, msg, data) => {
       //   console.log(`${kind}: ${msg}`, data)
       // }
@@ -26,11 +28,28 @@ let Wire = {
     this.channel.onClose(e => console.log("channel closed", e))
 
 
+
     this.channel.join()
       .receive("ok", resp => {
         console.log("Joined successfully", resp)
       })
       .receive("error", resp => { console.log("Unable to join", resp) })
+      .receive("timeout", () => console.log("Networking issue. Still waiting...") )
+  },
+
+  networkDetection() {
+    window.addEventListener('online', this.handleOnline)
+    window.addEventListener('offline', this.handleOffline)
+  },
+
+  handleOffline() {
+    ReduxStore.dispatch(offline())
+    this.disconnect()
+  },
+
+  handleOnline() {
+    ReduxStore.dispatch(online())
+    this.connect()
   },
 
   handlePresenceState(state) {

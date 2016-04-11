@@ -67,14 +67,7 @@ class Root extends Component {
     let { user } = this.state
     if (user) {
       return (
-        <div>
-          <App user={ user } room_id={ room_id } />
-          <div className="top-bar">
-            <div className="forget" onClick={ this.forget.bind(this) }>
-              Forget me
-            </div>
-          </div>
-        </div>
+        <App user={ user } room_id={ room_id } forget={ this.forget.bind(this) } />
       )
     } else {
       return (
